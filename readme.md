@@ -11,7 +11,7 @@ pip3 install -r requirements.txt
 Then:
 
 ```
-python3 ./dag_viz path_to_your_workflow.yaml template-name
+python3 ./dag_viz.py path_to_your_workflow.yaml template-name
 ```
 
 You will get an output in your current working directory called `output.gv`. You can render it with

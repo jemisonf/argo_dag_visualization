@@ -4,12 +4,11 @@ import yaml
 parser = argparse.ArgumentParser(description="visualize argo workflow DAGs")
 parser.add_argument("file", type=str, help="the path to the workflow file")
 parser.add_argument(
-    "template", type=str, help="the template to render", nargs="*", default=""
+    "template", type=str, help="the template to render", nargs="?", default=""
 )
 args = parser.parse_args()
 
 path = args.file
-template_name = args.template
 
 wf = {}
 
@@ -22,18 +21,20 @@ except:
 
 templates = wf["spec"]["templates"]
 
-if template_name == "":
+if args.template == "":
     print(f"Please use one of the following templates:")
     for template in templates:
         name = template["name"]
         print(f"\t{name}")
     exit(1)
 
+template_name = args.template
+
 with open("output.gv", "w+") as f:
 
     for template in templates:
         name = template["name"].replace("-", "_")
-        if "dag" not in template:
+        if "dag" not in template or template["name"] != template_name:
             continue
 
         f.write(f"digraph {name} {{\n")
